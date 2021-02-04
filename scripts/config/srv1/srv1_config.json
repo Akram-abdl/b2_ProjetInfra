@@ -1,0 +1,8 @@
+ {
+     "server_prefix" : "srv1",
+     "server_path" : "/home/nuriki_svfiles/main",
+     "mysql_path" : "/var/db/mysql",
+     "mysql_user" : "mt2",
+     "mysql_password" : "mt2",
+     "backup_path" : "/home/backup"
+ }
