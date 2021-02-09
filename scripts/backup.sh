@@ -1,34 +1,32 @@
 #!/bin/bash
 # 04/02/2021
 # IShungite
+#
+# Backup script for mysql tables
 
-scriptPath="/usr/local/www/b2_ProjetInfra/scripts/"
-configFile="config.json"
+load_date() {
+    dateFormat='%Y%m%d'
+    timeFormat='%H%M'
+    currentDate=$(date +${dateFormat})
+    currentTime=$(date +${timeFormat})
+}
 
-dateFormat='%Y%m%d'
-timeFormat='%H%M'
-currentDate=$(date +${dateFormat})
-currentTime=$(date +${timeFormat})
+load_json() {
+    configFile="config/${serverPrefix}/config.json"
 
-serverPrefix=$(cat ${configFile} | jq '.server_prefix' | sed 's/"//g')
-serverPath=$(cat ${configFile} | jq '.server_path' | sed 's/"//g')
-backupPath=$(cat ${configFile} | jq '.backup_path' | sed 's/"//g')
-mysqlPath=$(cat ${configFile} | jq '.mysql_path' | sed 's/"//g')
-mysqlUser=$(cat ${configFile} | jq '.mysql_user' | sed 's/"//g')
-mysqlPassword=$(cat ${configFile} | jq '.mysql_password' | sed 's/"//g')
+    if [ ! -e ${configFile} ] ; then
+        echo "config file doesn't exist"
+        exit 1
+    fi
 
-mysqlDatabases="${serverPrefix}_account ${serverPrefix}_common ${serverPrefix}_hotbackup ${serverPrefix}_log ${serverPrefix}_player"
+    serverPath=$(jq '.server_path' < ${configFile} | sed 's/"//g')
+    backupPath=$(jq '.backup_path' < ${configFile} | sed 's/"//g')
+    mysqlPath=$(jq '.mysql_path' < ${configFile} | sed 's/"//g')
+    mysqlUser=$(jq '.mysql_user' < ${configFile} | sed 's/"//g')
+    mysqlPassword=$(jq '.mysql_password' < ${configFile} | sed 's/"//g')
 
-echo "================="
-echo "currentDate : ${currentDate}"
-echo "currentTime : ${currentTime}"
-echo "serverPrefix : ${serverPrefix}"
-echo "serverPath : ${serverPath}"
-echo "mysqlPath : ${mysqlPath}"
-echo "mysqlUser : ${mysqlUser}"
-echo "mysqlPassword : ${mysqlPassword}"
-echo "mysqlDatabases : ${mysqlDatabases}"
-echo "================="
+    mysqlDatabases="${serverPrefix}_account ${serverPrefix}_common ${serverPrefix}_hotbackup ${serverPrefix}_log ${serverPrefix}_player"
+}
 
 do_backup() {
     backupServPath="${backupPath}/${serverPrefix}"
@@ -38,12 +36,20 @@ do_backup() {
     mysqldump -u${mysqlUser} -p${mysqlPassword} --set-gtid-purged=OFF --databases ${mysqlDatabases} > "${backupServPath}/${backupName}.sql"
 }
 
+main() {
+    serverPrefix=$1
+    load_json
+    load_date
+    echo "=========================="
+    echo "serverPrefix : ${serverPrefix}"
+    echo "serverPath : ${serverPath}"
+    echo "mysqlPath : ${mysqlPath}"
+    echo "mysqlUser : ${mysqlUser}"
+    echo "mysqlPassword : ${mysqlPassword}"
+    echo "mysqlDatabases : ${mysqlDatabases}"
+    echo "=========================="
+    do_backup
+    echo "Backup successfully completed"
+}
 
-do_backup
-
-
-# # # for f in $(ls ${mysqlPath})
-# # for f in ${mysqlPath}/srv1_*
-# # do
-# #     echo ${f}
-# # done
+main
