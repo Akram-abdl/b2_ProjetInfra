@@ -2,14 +2,7 @@
 # 04/02/2021
 # IShungite
 #
-# Backup script for mysql tables
-
-load_date() {
-    dateFormat='%Y%m%d'
-    timeFormat='%H%M'
-    currentDate=$(date +${dateFormat})
-    currentTime=$(date +${timeFormat})
-}
+# Create default tables/base in our mysql database
 
 load_json() {
     configFile="config/${serverPrefix}/config.json"
@@ -34,22 +27,13 @@ load_json() {
     mysqlDatabases="${serverPrefix}_${tableAccount} ${serverPrefix}_${tableCommon} ${serverPrefix}_${tableHotbackup} ${serverPrefix}_${tableLog} ${serverPrefix}_${tablePlayer}"
 }
 
-do_dump() {
-    backupServPath="${backupPath}/${serverPrefix}"
-    backupName="${currentDate}_${currentTime}"
-
-    mkdir -p ${backupServPath}
-    mysqldump -u${mysqlUser} -p${mysqlPassword} --set-gtid-purged=OFF --databases ${mysqlDatabases} > "${backupServPath}/${backupName}.sql"
-}
-
-do_backup() {
+init_mysql() {
 
 }
 
 main() {
     serverPrefix=$1
     load_json
-    load_date
     echo "=========================="
     echo "serverPrefix : ${serverPrefix}"
     echo "serverPath : ${serverPath}"
@@ -58,9 +42,8 @@ main() {
     echo "mysqlPassword : ${mysqlPassword}"
     echo "mysqlDatabases : ${mysqlDatabases}"
     echo "=========================="
-    do_dump
     do_backup
-    echo "Backup successfully completed"
+    echo "Init mysql successfully completed"
 }
 
 main
