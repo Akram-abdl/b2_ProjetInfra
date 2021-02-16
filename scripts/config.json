@@ -1,0 +1,16 @@
+{
+    "server_prefix": "srv2",
+    "server_path": "leservpath",
+    "mysql_path": "sqlpath",
+    "backup_path": "feoz",
+    "mysql_user": "test",
+    "mysql_password": "tes1",
+    "mysql_bases": {
+        "account": "leaccount",
+        "common": "lecommon",
+        "hotbackup": "lehot",
+        "log": "lelog",
+        "player": "leplayer"
+    }
+    
+}
