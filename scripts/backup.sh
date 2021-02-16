@@ -14,7 +14,6 @@ load_json() {
 
     serverPath=$(jq '.server_path' < ${configFile} | sed 's/"//g')
     backupPath=$(jq '.backup_path' < ${configFile} | sed 's/"//g')
-    mysqlPath=$(jq '.mysql_path' < ${configFile} | sed 's/"//g')
     mysqlUser=$(jq '.mysql_user' < ${configFile} | sed 's/"//g')
     mysqlPassword=$(jq '.mysql_password' < ${configFile} | sed 's/"//g')
 
@@ -24,26 +23,31 @@ load_json() {
     tableLog=$(jq '.mysql_tables.log' < ${configFile} | sed 's/"//g')
     tablePlayer=$(jq '.mysql_tables.player' < ${configFile} | sed 's/"//g')
 
-    mysqlDatabases="${serverPrefix}_${tableAccount} ${serverPrefix}_${tableCommon} ${serverPrefix}_${tableHotbackup} ${serverPrefix}_${tableLog} ${serverPrefix}_${tablePlayer}"
+    mysqlBases="${serverPrefix}_${tableAccount} ${serverPrefix}_${tableCommon} ${serverPrefix}_${tableHotbackup} ${serverPrefix}_${tableLog} ${serverPrefix}_${tablePlayer}"
 }
 
-init_mysql() {
+do_dump() {
+    local backupServPath="${backupPath}/${serverPrefix}"
+    local backupName="${currentDate}_${currentTime}"
+
+    mkdir -p ${backupServPath}
+    mysqldump -u${mysqlUser} -p${mysqlPassword} --set-gtid-purged=OFF --databases ${mysqlBases} > "${backupServPath}/${backupName}.sql"
+}
+
+do_backup() {
 
 }
 
 main() {
-    serverPrefix=$1
+    serverPrefix=${1}
     load_json
     echo "=========================="
     echo "serverPrefix : ${serverPrefix}"
     echo "serverPath : ${serverPath}"
-    echo "mysqlPath : ${mysqlPath}"
-    echo "mysqlUser : ${mysqlUser}"
-    echo "mysqlPassword : ${mysqlPassword}"
-    echo "mysqlDatabases : ${mysqlDatabases}"
     echo "=========================="
+    do_dump
     do_backup
     echo "Init mysql successfully completed"
 }
 
-main
+main ${1}
