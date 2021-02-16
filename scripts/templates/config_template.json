@@ -1,0 +1,15 @@
+ {
+     "server_prefix" : "srv1",
+     "server_path" : "/home",
+     "mysql_path" : "/var/db/mysql",
+     "backup_path" : "/home/backup",
+     "mysql_user" : "mt2",
+     "mysql_password" : "mt2",
+     "mysql_bases" : {
+        "account" : "account",
+        "common" : "common",
+        "hotbackup" : "hotbackup",
+        "log" : "log",
+        "player" : "player"
+    }
+ }

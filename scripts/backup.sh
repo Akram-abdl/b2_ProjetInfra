@@ -2,14 +2,7 @@
 # 04/02/2021
 # IShungite
 #
-# Backup script for mysql tables
-
-load_date() {
-    dateFormat='%Y%m%d'
-    timeFormat='%H%M'
-    currentDate=$(date +${dateFormat})
-    currentTime=$(date +${timeFormat})
-}
+# Create default tables/base in our mysql database
 
 load_json() {
     configFile="config/${serverPrefix}/config.json"
@@ -21,35 +14,40 @@ load_json() {
 
     serverPath=$(jq '.server_path' < ${configFile} | sed 's/"//g')
     backupPath=$(jq '.backup_path' < ${configFile} | sed 's/"//g')
-    mysqlPath=$(jq '.mysql_path' < ${configFile} | sed 's/"//g')
     mysqlUser=$(jq '.mysql_user' < ${configFile} | sed 's/"//g')
     mysqlPassword=$(jq '.mysql_password' < ${configFile} | sed 's/"//g')
 
-    mysqlDatabases="${serverPrefix}_account ${serverPrefix}_common ${serverPrefix}_hotbackup ${serverPrefix}_log ${serverPrefix}_player"
+    tableAccount=$(jq '.mysql_tables.account' < ${configFile} | sed 's/"//g')
+    tableCommon=$(jq '.mysql_tables.common' < ${configFile} | sed 's/"//g')
+    tableHotbackup=$(jq '.mysql_tables.hotbackup' < ${configFile} | sed 's/"//g')
+    tableLog=$(jq '.mysql_tables.log' < ${configFile} | sed 's/"//g')
+    tablePlayer=$(jq '.mysql_tables.player' < ${configFile} | sed 's/"//g')
+
+    mysqlBases="${serverPrefix}_${tableAccount} ${serverPrefix}_${tableCommon} ${serverPrefix}_${tableHotbackup} ${serverPrefix}_${tableLog} ${serverPrefix}_${tablePlayer}"
+}
+
+do_dump() {
+    local backupServPath="${backupPath}/${serverPrefix}"
+    local backupName="${currentDate}_${currentTime}"
+
+    mkdir -p ${backupServPath}
+    mysqldump -u${mysqlUser} -p${mysqlPassword} --set-gtid-purged=OFF --databases ${mysqlBases} > "${backupServPath}/${backupName}.sql"
 }
 
 do_backup() {
-    backupServPath="${backupPath}/${serverPrefix}"
-    backupName="${currentDate}_${currentTime}"
 
-    mkdir -p ${backupServPath}
-    mysqldump -u${mysqlUser} -p${mysqlPassword} --set-gtid-purged=OFF --databases ${mysqlDatabases} > "${backupServPath}/${backupName}.sql"
 }
 
 main() {
-    serverPrefix=$1
+    serverPrefix=${1}
     load_json
-    load_date
     echo "=========================="
     echo "serverPrefix : ${serverPrefix}"
     echo "serverPath : ${serverPath}"
-    echo "mysqlPath : ${mysqlPath}"
-    echo "mysqlUser : ${mysqlUser}"
-    echo "mysqlPassword : ${mysqlPassword}"
-    echo "mysqlDatabases : ${mysqlDatabases}"
     echo "=========================="
+    do_dump
     do_backup
-    echo "Backup successfully completed"
+    echo "Init mysql successfully completed"
 }
 
-main
+main ${1}
