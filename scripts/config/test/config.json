@@ -1,5 +1,5 @@
  {
-     "server_prefix" : "srv1",
+     "server_prefix" : "test",
      "server_path" : "/home",
      "backup_path" : "/home/backup",
      "mysql_user" : "mt2",
