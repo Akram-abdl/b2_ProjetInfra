@@ -24,7 +24,7 @@ load_json() {
     dbPort=${startingPort}
     declare -ag mapAllow
     for (( i=1; i<=${srvCoreNumber}; i++ )); do
-        value=$(jq ".map_allow.core${i}" < ${configFile} | sed 's/"//g');
+        value=$(jq ".server_mapAllow.core${i}" < ${configFile} | sed 's/"//g');
         mapAllow[${i}]=${value}
     done
     mapAllow[99]=$(jq ".map_allow.core99" < ${configFile} | sed 's/"//g');

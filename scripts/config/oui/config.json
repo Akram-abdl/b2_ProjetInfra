@@ -1,8 +1,21 @@
 {
-    "server_prefix" : "yessai",
+    "server_prefix" : "oui",
     "server_path" : "/home",
-    "mysql_path" : "/var/db/mysql",
+    "server_channelNumber" : 4,
+    "server_coreNumber" : 5,
+    "server_port" : 62000,
+    "server_mapAllow" : {
+        "core1" : "1 2 3 4",
+        "core2" : "5 6 7",
+        "core3" : "8",
+        "core4" : "9",
+        "core5" : "10",
+        "core99" : "72"
+    },
+
     "backup_path" : "/home/backup",
+
+    "mysql_path" : "/var/db/mysql",
     "mysql_user" : "oui",
     "mysql_password" : "moi",
     "mysql_bases" : {
@@ -11,16 +24,5 @@
         "hotbackup" : "hotbackup",
         "log" : "log",
         "player" : "player"
-    },
-    "server_channelNumber" : 4,
-    "server_coreNumber" : 5,
-    "server_port" : 62000,
-    "map_allow" : {
-        "core1" : "1 2 3 4",
-        "core2" : "5 6 7",
-        "core3" : "8",
-        "core4" : "9",
-        "core5" : "10",
-        "core99" : "72"
     }
 }
