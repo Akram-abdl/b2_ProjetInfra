@@ -1,8 +1,13 @@
  {
      "server_prefix" : "srv1",
      "server_path" : "/home",
-     "mysql_path" : "/var/db/mysql",
+     "server_channelNumber" : 2,
+     "server_coreNumber" : 3,
+     "server_port" : 30000,
+
      "backup_path" : "/home/backup",
+
+     "mysql_path" : "/var/db/mysql",
      "mysql_user" : "mt2",
      "mysql_password" : "mt2",
      "mysql_bases" : {
