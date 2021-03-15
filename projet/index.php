@@ -15,7 +15,7 @@
     <?php
     foreach (glob("../scripts/config/*") as $folderPath) {
         $folderName = basename($folderPath);
-        echo "<a href='serverBoard.php?server=${folderName}'>- ${folderName}</a>";
+        echo "<a href='serverBoard.php?server=${folderName}'>- ${folderName}</a> </br>";
     }
     ?>
     <br>

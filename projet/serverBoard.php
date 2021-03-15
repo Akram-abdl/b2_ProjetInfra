@@ -10,7 +10,7 @@
 
 <body>
     <h1>Server <?php echo htmlspecialchars($_GET["server"]) ?></h1>
-
+    <a href="index.php">Home</a>
 </body>
 
 </html>
