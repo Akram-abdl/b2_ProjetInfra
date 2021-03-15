@@ -2,7 +2,7 @@
 # 04/02/2021
 # IShungite
 #
-# Create default tables/base in our mysql database
+# Dump and save all server files
 
 load_json() {
     configFile="config/${serverPrefix}/config.json"
@@ -17,25 +17,33 @@ load_json() {
     mysqlUser=$(jq '.mysql_user' < ${configFile} | sed 's/"//g')
     mysqlPassword=$(jq '.mysql_password' < ${configFile} | sed 's/"//g')
 
-    tableAccount=$(jq '.mysql_tables.account' < ${configFile} | sed 's/"//g')
-    tableCommon=$(jq '.mysql_tables.common' < ${configFile} | sed 's/"//g')
-    tableHotbackup=$(jq '.mysql_tables.hotbackup' < ${configFile} | sed 's/"//g')
-    tableLog=$(jq '.mysql_tables.log' < ${configFile} | sed 's/"//g')
-    tablePlayer=$(jq '.mysql_tables.player' < ${configFile} | sed 's/"//g')
+    baseAccount=$(jq '.mysql_bases.account' < ${configFile} | sed 's/"//g')
+    baseCommon=$(jq '.mysql_bases.common' < ${configFile} | sed 's/"//g')
+    baseHotbackup=$(jq '.mysql_bases.hotbackup' < ${configFile} | sed 's/"//g')
+    baseLog=$(jq '.mysql_bases.log' < ${configFile} | sed 's/"//g')
+    basePlayer=$(jq '.mysql_bases.player' < ${configFile} | sed 's/"//g')
 
-    mysqlBases="${serverPrefix}_${tableAccount} ${serverPrefix}_${tableCommon} ${serverPrefix}_${tableHotbackup} ${serverPrefix}_${tableLog} ${serverPrefix}_${tablePlayer}"
+    local dateFormat='%Y%m%d'
+    local timeFormat='%H%M'
+    currentDate=$(date +${dateFormat})
+    currentTime=$(date +${timeFormat})
+
+    backupServPath="${backupPath}/${serverPrefix}/${currentDate}_${currentTime}"
+    mysqlBases="${serverPrefix}_${baseAccount} ${serverPrefix}_${baseCommon} ${serverPrefix}_${baseHotbackup} ${serverPrefix}_${baseLog} ${serverPrefix}_${basePlayer}"
 }
 
-do_dump() {
-    local backupServPath="${backupPath}/${serverPrefix}"
-    local backupName="${currentDate}_${currentTime}"
+do_backup_mysql() {
+    local dumpName="${serverPrefix}_mysql"
 
     mkdir -p ${backupServPath}
-    mysqldump -u${mysqlUser} -p${mysqlPassword} --set-gtid-purged=OFF --databases ${mysqlBases} > "${backupServPath}/${backupName}.sql"
+    mysqldump -u${mysqlUser} -p${mysqlPassword} --set-gtid-purged=OFF --databases ${mysqlBases} > "${backupServPath}/${dumpName}.sql"
 }
 
-do_backup() {
+do_backup_files() {
+    local backupName="${serverPrefix}_files"
 
+    tar czfP "${backupName}.tar.gz" "${serverPath}/${serverPrefix}/" "${configFile}"
+    mv "${backupName}.tar.gz" "${backupServPath}/${backupName}.tar.gz"
 }
 
 main() {
@@ -45,9 +53,9 @@ main() {
     echo "serverPrefix : ${serverPrefix}"
     echo "serverPath : ${serverPath}"
     echo "=========================="
-    do_dump
-    do_backup
-    echo "Init mysql successfully completed"
+    do_backup_mysql
+    do_backup_files
+    echo "Backup successfully completed"
 }
 
 main ${1}
