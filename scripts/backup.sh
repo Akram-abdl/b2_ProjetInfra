@@ -2,7 +2,7 @@
 # 04/02/2021
 # IShungite
 #
-# Dump and save all server files
+# Dump and save all server files, and transfers them to a remote server
 
 load_json() {
     configFile="config/${serverPrefix}/config.json"
@@ -46,6 +46,16 @@ do_backup_files() {
     mv "${backupName}.tar.gz" "${backupServPath}/${backupName}.tar.gz"
 }
 
+send_files() {
+    local username="projet"
+    local password="projet"
+    local ip="192.168.2.10"
+
+    sshpass -p ${password} ssh ${username}@${ip} "mkdir -p backup/${serverPrefix}"
+    sshpass -p ${password} scp -r ${backupServPath} ${username}@${ip}:"backup/${serverPrefix}/"
+
+}
+
 main() {
     serverPrefix=${1}
     load_json
@@ -55,6 +65,7 @@ main() {
     echo "=========================="
     do_backup_mysql
     do_backup_files
+    send_files
     echo "Backup successfully completed"
 }
 
