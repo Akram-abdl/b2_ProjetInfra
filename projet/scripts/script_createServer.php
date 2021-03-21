@@ -2,9 +2,9 @@
 include '../config.php';
 
 if (isset($_POST['submit'])) {
-    $jsondata = file_get_contents("../$TEMPLATE_CONFIG_PATH");
+    $jsonData = file_get_contents("../$TEMPLATE_CONFIG_PATH");
     // Convert to array 
-    $arrayTemplate = json_decode($jsondata, true);
+    $arrayTemplate = json_decode($jsonData, true);
 
     $array = [];
 
