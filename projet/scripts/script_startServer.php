@@ -1,0 +1,1 @@
+sh admin_panel.sh start
