@@ -25,6 +25,7 @@ if (isset($_POST['submit'])) {
         $contents = json_encode($array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         file_put_contents("${outPath}/config.json", $contents);
     }
+    shell_exec("bash ../../scripts/create_server.sh ${serverPrefix}");
     header("Location: ../serverBoard.php?server=${serverPrefix}");
     exit;
 }

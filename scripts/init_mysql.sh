@@ -59,6 +59,7 @@ main() {
     echo "=========================="
     echo "STARTING INIT MYSQL BASES/TABLES"
     echo "------------------"
+    cd "/usr/local/www/b2_ProjetInfra/scripts"
     serverPrefix=${1}
     load_json
     init_mysql

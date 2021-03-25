@@ -12,8 +12,8 @@ load_json() {
         exit 1
     fi
 
-    serverPath=$(jq '.server_path' < ${configFile} | sed 's/"//g')
-    backupPath=$(jq '.backup_path' < ${configFile} | sed 's/"//g')
+    serverPath="/home/server"
+    backupPath="/home/backup"
     mysqlUser=$(jq '.mysql_user' < ${configFile} | sed 's/"//g')
     mysqlPassword=$(jq '.mysql_password' < ${configFile} | sed 's/"//g')
 
@@ -57,16 +57,18 @@ send_files() {
 }
 
 main() {
+    echo "=========================="
+    echo "CREATING SERVER BACKUP"
+    echo "------------------"
+    cd "/usr/local/www/b2_ProjetInfra/scripts"
     serverPrefix=${1}
     load_json
-    echo "=========================="
-    echo "serverPrefix : ${serverPrefix}"
-    echo "serverPath : ${serverPath}"
-    echo "=========================="
     do_backup_mysql
     do_backup_files
     send_files
-    echo "Backup successfully completed"
+    echo "------------------"
+    echo "CREATING SERVER BACKUP SUCCESSFULLY COMPLETED"
+    echo "=========================="
 }
 
 main ${1}

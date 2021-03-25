@@ -13,4 +13,7 @@ foreach (glob("../scripts/config/*") as $folderPath) {
 <br>
 <a href="createServer.php">Create new server</a>
 
-<?php require_once 'footer.php'; ?>
+
+<?php
+require_once 'footer.php';
+?>

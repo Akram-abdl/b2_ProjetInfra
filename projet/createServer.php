@@ -11,6 +11,7 @@
 
             foreach ($array as $key => $value) {
                 if (is_array($value)) {
+                    echo "<div id='$key'>$key</div>";
                     foreach ($value as $key2 => $value2) {
                         echo "<div id='$key2' class='input'>$key2
                                 <input id='$key2' value='$value2' type='text'
@@ -27,7 +28,7 @@
             ?>
 
             <div class="id input">
-                <input id="submit" type="submit" name="submit" value="submit" onclick="on_submit()">
+                <input id="submit" type="submit" name="submit" value="submit">
             </div>
         </div>
     </form>

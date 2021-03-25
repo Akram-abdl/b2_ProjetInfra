@@ -26,15 +26,17 @@ do_restore_mysql() {
 }
 
 main() {
+    echo "=========================="
+    echo "RESTORING SERVER BACKUP"
+    echo "------------------"
+    cd "/usr/local/www/b2_ProjetInfra/scripts"
     serverPrefix=${1}
-    echo "=========================="
-    echo "serverPrefix : ${serverPrefix}"
-    echo "serverPath : ${serverPath}"
-    echo "=========================="
     do_restore_files
     load_json
     do_restore_mysql
-    echo "Restore successfully completed"
+    echo "------------------"
+    echo "RESTORING SERVER BACKUP SUCCESSFULLY COMPLETED"
+    echo "=========================="
 }
 
 main ${1}

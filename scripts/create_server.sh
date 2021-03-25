@@ -10,7 +10,7 @@ load_json() {
         echo "config file doesn't exist"
         exit 1
     fi
-    serverPath=$(jq '.server_path' < ${configFile} | sed 's/"//g')
+    serverPath="/home/server"
     srvChannelNumber=$(jq '.server_channelNumber' < ${configFile} | sed 's/"//g')
     srvCoreNumber=$(jq '.server_coreNumber' < ${configFile} | sed 's/"//g')
     sqlUser=$(jq '.mysql_user' < ${configFile} | sed 's/"//g')
@@ -145,15 +145,24 @@ createShareFiles(){
 }
 
 main(){
+    echo "=========================="
+    echo "CREATING SERVER FILES"
+    echo "------------------"
+    cd "/usr/local/www/b2_ProjetInfra/scripts"
     serverPrefix=${1}
     load_json
-    dest="${serverPath}/${serverPrefix}"
+    dest="/home/server/${serverPrefix}"
     mkdir -p ${dest}
     createAuthFiles
     createChanFiles
     createDbFiles
     createLogsFiles
     createShareFiles
+    echo "------------------"
+    echo "CREATING SERVER FILES SUCCESSFULLY COMPLETED"
+    echo "=========================="
+
+    bash init_mysql.sh ${serverPrefix}
 }
 
 main ${1}
