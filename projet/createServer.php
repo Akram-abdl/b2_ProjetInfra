@@ -13,22 +13,44 @@
                 if (is_array($value)) {
                     echo "<div id='$key'>$key</div>";
                     foreach ($value as $key2 => $value2) {
-                        echo "<div id='$key2' class='input'>$key2
-                                <input id='$key2' value='$value2' type='text'
-                                    Placeholder='$key2' name='$key2'required> 
-                                </div>";
+                        echo "
+                            <div class='row g-3 align-items-center'>
+                                <div class='col-auto'>
+                                <label for='>$key2' class='col-form-label'>$key2</label>
+                                </div>
+                                <div class='col-auto'>
+                                <input type='text' id='$key2'name='$key2' value='$value2' class='form-control'>
+                                </div>
+                                <div class='col-auto'>
+                                <span id='passwordHelpInline' class='form-text'>
+                                    $value2
+                                </span>
+                            </div>
+                        </div>
+                        ";
                     }
                 } else {
-                    echo "<div id='$key' class='input'>$key
-                            <input id='$key' value='$value' type='text'
-                                Placeholder='$key' name='$key'required> 
-                            </div>";
+                    echo "
+                            <div class='row g-3 align-items-center'>
+                            <div class='col-auto'>
+                            <label for='>$key' class='col-form-label'>$key</label>
+                            </div>
+                            <div class='col-auto'>
+                            <input type='text' id='$key' name='$key' value='$value' class='form-control'>
+                            </div>
+                            <div class='col-auto'>
+                            <span class='form-text'>
+                                $value
+                            </span>
+                            </div>
+                        </div>
+                        ";
                 }
             }
             ?>
 
-            <div class="id input">
-                <input id="submit" type="submit" name="submit" value="submit">
+            <div class="input">
+                <input class="btn btn-primary" id="submit" type="submit" name="submit" value="submit">
             </div>
         </div>
     </form>

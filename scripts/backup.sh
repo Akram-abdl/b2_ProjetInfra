@@ -51,8 +51,11 @@ send_files() {
     local password="projet"
     local ip="192.168.2.10"
 
-    sshpass -p ${password} ssh ${username}@${ip} "mkdir -p backup/${serverPrefix}"
-    sshpass -p ${password} scp -r ${backupServPath} ${username}@${ip}:"backup/${serverPrefix}/"
+    if ping -c 1 ${ip} > /dev/null
+    then
+        sshpass -p ${password} ssh ${username}@${ip} "mkdir -p backup/${serverPrefix}"
+        sshpass -p ${password} scp -r ${backupServPath} ${username}@${ip}:"backup/${serverPrefix}/"
+    fi
 
 }
 
