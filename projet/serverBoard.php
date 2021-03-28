@@ -11,6 +11,11 @@ $server = htmlspecialchars($_GET['server']);
     <input id="submit" class="btn btn-primary" type="submit" name="submit" value="Close Server">
 </form>
 
+
+<form name='formCreateBackup' method='post' action='scripts/script_deleteServer.php'>
+    <?php echo "<button class='btn btn-primary' type='submit' name='submit' value='${server}'>Delete Server</button>" ?>
+</form>
+
 <div>
     <h2>Backup list</h2>
     <table class="table">
@@ -24,26 +29,31 @@ $server = htmlspecialchars($_GET['server']);
             <?php
             $backupFolder = "${BACKUP_FOLDER}/${server}/";
             $scanned_directory = array_diff(scandir($backupFolder), array('..', '.'));
-            echo "<tr>";
+
+            $scanned_directory = array_reverse($scanned_directory);
 
             foreach ($scanned_directory as $folder) {
-                echo "  <td>${folder}</td>
-                        <td>
-                            <form name='formRestore' method='post' action='scripts/script_restoreBackup.php'>
-                                <button class='btn btn-success' type='submit' name='product' value='${folder}'>Restore</button>
-                            </form>
-                            <form name='formRestore' method='post' action='scripts/script_deleteBackup.php'>
-                                <button class='btn btn-danger' type='submit' name='product' value='${folder}'>Delete</button>
-                            </form>
-                        </td>";
+                echo "  <tr>
+                            <td>${folder}</td>
+                            <td>
+                                <form name='formRestore' method='get' action='scripts/script_restoreBackup.php?server=$server'>
+                                    <button class='btn btn-success' type='submit' name='folder' value='${folder}'>Restore</button>
+                                </form>
+                                <a href='scripts/script_deleteBackup.php?server=${server}&folder=${folder}'><button id='btn-delete' class='btn btn-danger' type='submit' >Delete</button></a>
+                            </td>
+                        </tr>";
             }
-
-            echo "</tr>";
             ?>
         </tbody>
     </table>
 </div>
 
+<div>
+    <form name='formCreateBackup' method='post' action='scripts/script_createBackup.php'>
+        <?php echo "<button class='btn btn-primary' type='submit' name='submit' value='${server}'>Create backup</button>" ?>
+    </form>
+
 </div>
+
 
 <?php require_once 'footer.php'; ?>

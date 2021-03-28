@@ -10,7 +10,7 @@
     ?>
     <br>
     <br>
-    <a href="createServer.php" class="btn btn-primary">Create new server</a>
+    <a href="createServer.php"><button class='btn btn-primary' type='submit'>Create new server</button></a>
 </div>
 <?php
 require_once 'footer.php';
