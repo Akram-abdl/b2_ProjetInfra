@@ -16,13 +16,11 @@ load_json() {
 }
 
 do_restore_files() {
-    tar xzfP ${serverPrefix}_files.tar.gz
-    rm -rf ${serverPrefix}_files.tar.gz
+    tar xzfP "${backupPath}/${serverPrefix}/${folder}/${serverPrefix}_files.tar.gz"
 }
 
 do_restore_mysql() {
-    mysql -u${mysqlUser} -p${mysqlPassword} < ${serverPrefix}_mysql.sql
-    rm -rf ${serverPrefix}_mysql.sql
+    mysql -u${mysqlUser} -p${mysqlPassword} < "${backupPath}/${serverPrefix}/${folder}/${serverPrefix}_mysql.sql"
 }
 
 main() {
@@ -31,6 +29,9 @@ main() {
     echo "------------------"
     cd "/usr/local/www/b2_ProjetInfra/scripts"
     serverPrefix=${1}
+    folder=${2}
+    backupPath="/home/backup"
+    # bash delete.sh ${serverPrefix}
     do_restore_files
     load_json
     do_restore_mysql
@@ -39,4 +40,4 @@ main() {
     echo "=========================="
 }
 
-main ${1}
+main ${1} ${2}

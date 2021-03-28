@@ -36,9 +36,7 @@ $server = htmlspecialchars($_GET['server']);
                 echo "  <tr>
                             <td>${folder}</td>
                             <td>
-                                <form name='formRestore' method='get' action='scripts/script_restoreBackup.php?server=$server'>
-                                    <button class='btn btn-success' type='submit' name='folder' value='${folder}'>Restore</button>
-                                </form>
+                                <a href='scripts/script_restoreBackup.php?server=${server}&folder=${folder}'><button id='btn-delete' class='btn btn-success' type='submit' >Restore</button></a>
                                 <a href='scripts/script_deleteBackup.php?server=${server}&folder=${folder}'><button id='btn-delete' class='btn btn-danger' type='submit' >Delete</button></a>
                             </td>
                         </tr>";
