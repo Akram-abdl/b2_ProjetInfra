@@ -74,7 +74,7 @@ CHANNEL: 1" >> ${filePath}
 createAuthFiles(){
     local authPath="${dest}/auth"
     mkdir -p ${authPath}
-    local linksPathInfo=("logs/${serverPrefix}/auth/cores" "share/data" "share/locale" "logs/${serverPrefix}/auth/log" "share/package" "share/package" "share/panama" "share/conf/BANIP" "share/conf/CMD" "share/conf/CRC" "logs/${serverPrefix}/auth/PTS" "share/bin/game" "share/conf/state_user_count" "share/conf/VERSION")
+    local linksPathInfo=("logs/${serverPrefix}/auth/cores" "share/data" "share/locale" "logs/${serverPrefix}/auth/log" "share/package" "share/panama" "share/conf/BANIP" "share/conf/CMD" "share/conf/CRC" "logs/${serverPrefix}/auth/PTS" "share/bin/game" "share/conf/state_user_count" "share/conf/VERSION")
     local linksPlaceInfo=("cores" "data" "locale" "log" "package" "panama" "BANIP" "CMD" "CRC" "PTS" "${serverPrefix}-auth" "state_user_count" "VERSION")
     for (( i=0; i<${#linksPathInfo[@]}; i++ )); do
         ln -sf "../${linksPathInfo[i]}" "${authPath}/${linksPlaceInfo[i]}"
