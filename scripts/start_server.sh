@@ -36,6 +36,7 @@ startChan(){
 }
 
 main(){
+    # cd "/usr/local/www/b2_ProjetInfra/scripts"
     serverPrefix=${1}
     load_json
     dest="/home/server/${serverPrefix}"
