@@ -12,6 +12,24 @@ $core = htmlspecialchars($_GET['core']);
 <form name='formCloseServer' method="post" action="scripts/script_closeServer.php">
     <input id="submit" class="btn btn-primary" type="submit" name="submit" value="Close Server">
 </form>
+<nav id="navbar-example2" class="navbar navbar-light bg-light px-3">
+  <a class="navbar-brand">Process Status</a>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link">@Status</a>
+    </li>
+  </ul>
+</nav>
+<div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
+  <h4 id="fat">Status</h4>
+    <p>
+        <?php
+        $output = shell_exec("bash ./status.sh $server $chan $core");
+
+        echo "<pre>$output</pre>";
+        ?>
+    </p>
+</div>
 
 
 <form name='formCreateBackup' method='post' action='scripts/script_deleteServer.php'>
