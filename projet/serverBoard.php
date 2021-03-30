@@ -1,5 +1,7 @@
 <?php require_once 'header.php';
 $server = htmlspecialchars($_GET['server']);
+$chan = htmlspecialchars($_GET['chan']);
+$core = htmlspecialchars($_GET['core']);
 ?>
 
 <h2>Server <?php echo "${server}" ?></h2>
